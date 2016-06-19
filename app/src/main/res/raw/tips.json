@@ -1,0 +1,47 @@
+[
+  {
+    "country": "BRAZIL",
+    "tipType": "LEAVING_THE_COUNTRY",
+    "title": "Permissão de Viagem",
+    "content": "Carregar Consigo a Permissão de Viagem Assinada Pelo Juiz Local!",
+    "recommendedProfile": {
+      "age": "< 18"
+    }
+  },
+  {
+    "country": "BRAZIL",
+    "tipType": "LEAVING_THE_COUNTRY",
+    "title": "Quitação de Crimes",
+    "content": "Apresentar Comprovante de Quitação de Crimes no Ato do Visto!",
+    "recommendedProfile": {
+      "qtPoliceRecords": "> 0"
+    }
+  },
+  {
+    "country": "BRAZIL",
+    "tipType": "ENTERING_IN_COUNTRY",
+    "title": "Quitação de Crimes do País de Origem",
+    "content": "Apresentar Comprovante de Quitação de Crimes retirado no país de origem no ato do visto!",
+    "recommendedProfile": {
+      "qtPoliceRecords": "> 0"
+    }
+  },
+  {
+    "country": "UNITED_STATES",
+    "tipType": "ENTERING_IN_COUNTRY",
+    "title": "Bagagem",
+    "content": "O Limite de Bagagem a entrar no país não pode exceder 100KG!",
+    "recommendedProfile": {
+      "qtSons": ">= 3"
+    }
+  },
+  {
+    "country": "UNITED_STATES",
+    "tipType": "SAIR_PAIS",
+    "title": "Permissão de Viagem",
+    "content": "Carregar Consigo a Permissão de Viagem Assinada Pelo Juiz Local!",
+    "recommendedProfile": {
+      "age": "< 18"
+    }
+  }
+]

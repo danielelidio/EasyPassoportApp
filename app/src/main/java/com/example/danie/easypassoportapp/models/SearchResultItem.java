@@ -37,7 +37,7 @@ public class SearchResultItem {
     public String getDescription() {
         return description;
     }
-    public String getShortDescription() { return description.substring(0, 50) + "..."; }
+    public String getShortDescription() { return description.substring(0, 48) + "..."; }
 
     public void setDescription(String description) {
         this.description = description;

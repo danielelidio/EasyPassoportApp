@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.danie.easypassoportapp.adapters.CountriesAdapter;
+import com.example.danie.easypassoportapp.adapters.TravelReasonsAdapter;
+import com.example.danie.easypassoportapp.models.Country;
+import com.example.danie.easypassoportapp.models.TravelReason;
 
 public class MainActivity extends AppCompatActivity {
     Spinner spinnerCowntryFrom = null;
@@ -17,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textAge = null;
     TextView textQtSons = null;
     TextView textQtTravelsAbroad = null;
-    TextView textQtPoliceIncomings = null;
+    TextView textQtPoliceRecords = null;
     Button btnSearchTips = null;
 
     @Override
@@ -32,91 +35,47 @@ public class MainActivity extends AppCompatActivity {
         this.textAge = (TextView)findViewById(R.id.textAge);
         this.textQtSons = (TextView)findViewById(R.id.textQtSons);
         this.textQtTravelsAbroad = (TextView)findViewById(R.id.textQtTravelsAbroad);
-        this.textQtPoliceIncomings = (TextView)findViewById(R.id.textQtPoliceIncomings);
+        this.textQtPoliceRecords = (TextView)findViewById(R.id.textQtPoliceRecords);
 
-        String[] countriesItems = new String[] { "Argentina", "Bélgica", "Brazil", "Croácia", "Dinamarca" };
-        String[] travelReasonItems = new String[] { "Turismo", "Estudos", "Trabalho", "Missão Diplomática" };
-        
-        ArrayAdapter<String> cowntriesAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, countriesItems);
-        cowntriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final Country[] countries = new Country[] {
+                new Country("Argentina", "ARGENTINA"),
+                new Country("Bélgica", "BELGIUM"),
+                new Country("Brazil", "BRAZIL"),
+                new Country("Croácia", "CROATIA"),
+                new Country("Dinamarca", "DENMARK"),
+                new Country("Estados Unidos", "UNITED_STATES")
+        };
 
-        ArrayAdapter<String> travelReasonAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, travelReasonItems);
-        travelReasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final TravelReason[] travelReasons = new TravelReason[] {
+                new TravelReason("Turismo", "TOURISM"),
+                new TravelReason("Estudos", "STUDIES"),
+                new TravelReason("Trabalho", "JOB"),
+                new TravelReason("Missao Diplomática", "DIPLOMATIC_MISSION"),
+        };
+
+        CountriesAdapter cowntriesAdapter = new CountriesAdapter(this, android.R.layout.simple_spinner_dropdown_item, countries);
+
+        TravelReasonsAdapter travelReasonAdapter = new TravelReasonsAdapter(this,
+                android.R.layout.simple_spinner_dropdown_item, travelReasons);
         
         spinnerCowntryFrom.setAdapter(cowntriesAdapter);
-
-        spinnerCowntryFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         spinnerCowntryTo.setAdapter(cowntriesAdapter);
-
-        spinnerCowntryTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         spinnerTravelReason.setAdapter(travelReasonAdapter);
-
-        spinnerTravelReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         final MainActivity self = this;
         this.btnSearchTips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(self, SearchResultActivity.class);
-                i.putExtra("fromCountry", ((String) self.spinnerCowntryFrom.getSelectedItem()));
-                i.putExtra("toCountry", ((String) self.spinnerCowntryTo.getSelectedItem()));
-                i.putExtra("travelReason", ((String) self.spinnerTravelReason.getSelectedItem()));
-                i.putExtra("age", self.textAge.getText());
-                i.putExtra("qtSons", self.textQtSons.getText());
-                i.putExtra("qtTravelsAbroad", self.textQtTravelsAbroad.getText());
-                i.putExtra("qtPoliceIncomings", self.textQtPoliceIncomings.getText());
+                i.putExtra("fromCountry", countries[self.spinnerCowntryFrom.getSelectedItemPosition()].getAlias());
+                i.putExtra("toCountry", countries[self.spinnerCowntryTo.getSelectedItemPosition()].getAlias());
+                i.putExtra("travelReason", travelReasons[self.spinnerTravelReason.getSelectedItemPosition()].getAlias());
+                i.putExtra("age", Integer.parseInt(self.textAge.getText().toString()));
+                i.putExtra("qtSons", Integer.parseInt(self.textQtSons.getText().toString()));
+                i.putExtra("qtTravelsAbroad", Integer.parseInt(self.textQtTravelsAbroad.getText().toString()));
+                i.putExtra("qtPoliceRecords", Integer.parseInt(self.textQtPoliceRecords.getText().toString()));
 
                 startActivity(i);
-//                try {
-//                    Dica[] dicasSairPais = DicasPerfil.getDicaPaisOrigem("BRAZIL");
-//                    Dica[] dicasEntrarPais = DicasPerfil.getDicaPaisDestino("EUA");
-//
-//                    Log.d("", "Dicas para Sair do Brazil:");
-//                    for (Dica dica : dicasSairPais) {
-//                        Log.d("", "\t" + dica.getTitulo());
-//                    }
-//
-//                    Log.d("", "\nDicas para Entrar nos EUA:");
-//                    for (Dica dica : dicasEntrarPais) {
-//                        Log.d("", "\t" + dica.getTitulo());
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
             }
         });
     }

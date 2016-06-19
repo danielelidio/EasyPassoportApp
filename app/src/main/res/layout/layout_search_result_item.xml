@@ -13,7 +13,8 @@
         android:id="@+id/textNumber"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_gravity="center"
-        android:textAlignment="gravity" />
+        android:textAlignment="gravity"
+        android:textColor="#000000" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,13 +28,15 @@
             android:text="Titulo..."
             android:id="@+id/textTitle"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#262424" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Descrição..."
             android:id="@+id/textDescription"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#333131" />
     </LinearLayout>
 </LinearLayout>

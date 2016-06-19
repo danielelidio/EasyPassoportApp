@@ -16,24 +16,24 @@ import com.example.danie.easypassoportapp.models.SearchResultsModel;
  * Created by danie on 14/06/2016.
  */
 public class SearchResultAdapter extends BaseAdapter {
-    SearchResultsModel dicas = null;
+    SearchResultsModel tips = null;
     Activity _activity = null;
     private LayoutInflater mInflater = null;
 
-    public SearchResultAdapter(Context context, SearchResultsModel dicas) {
-        this.dicas = dicas;
+    public SearchResultAdapter(Context context, SearchResultsModel tips) {
+        this.tips = tips;
 
         this.mInflater = ((Activity)context).getLayoutInflater();
     }
 
     @Override
     public int getCount() {
-        return this.dicas.getSize();
+        return this.tips.getSize();
     }
 
     @Override
     public Object getItem(int position) {
-        return this.dicas.getResult(position);
+        return this.tips.getResult(position);
     }
 
     @Override
@@ -54,10 +54,10 @@ public class SearchResultAdapter extends BaseAdapter {
 
         //pega os dados da lista
         //e define os valores nos itens.
-        SearchResultItem dica = this.dicas.getResult(position);
-        textNumber.setText(dica.getNrFormatted());
-        textTitle.setText(dica.getTitle());
-        textDescription.setText(dica.getShortDescription());
+        SearchResultItem tip = this.tips.getResult(position);
+        textNumber.setText(tip.getNrFormatted());
+        textTitle.setText(tip.getTitle());
+        textDescription.setText(tip.getShortDescription());
 
         //retorna a view com as informações
         return view;

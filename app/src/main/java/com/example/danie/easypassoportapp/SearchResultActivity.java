@@ -8,22 +8,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.danie.easypassoportapp.adapters.SearchResultAdapter;
-import com.example.danie.easypassoportapp.models.Dica;
+import com.example.danie.easypassoportapp.ai.ProfileTips;
+import com.example.danie.easypassoportapp.models.Profile;
 import com.example.danie.easypassoportapp.models.SearchResultItem;
 import com.example.danie.easypassoportapp.models.SearchResultsModel;
+import com.example.danie.easypassoportapp.models.Tip;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class SearchResultActivity extends AppCompatActivity {
     private ListView searchResultsList = null;
     private SearchResultsModel searchResultsModel = null;
-    private Dica[] dicas = null;
+    private Tip[] tips = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,28 +33,24 @@ public class SearchResultActivity extends AppCompatActivity {
             String fromCountry = b.getString("fromCountry");
             String toCountry = b.getString("toCountry");
             String travelReason = b.getString("travelReason");
-            String age = b.getString("age");
-            String qtSons = b.getString("qtSons");
-            String qtTravelsAbroad = b.getString("qtTravelsAbroad");
-            String qtPoliceIncomings = b.getString("qtPoliceIncomings");
+            int age = b.getInt("age");
+            int qtSons = b.getInt("qtSons");
+            int qtTravelsAbroad = b.getInt("qtTravelsAbroad");
+            int qtPoliceRecords = b.getInt("qtPoliceRecords");
 
 
             // REALIZA A CONSULTA
-
-            InputStream is = SearchResultActivity.this.getApplicationContext().getResources().openRawResource(R.raw.dicas);
-            String json = readTextFile(is);;
-
             try {
-                final JSONArray jsonObj = new JSONArray(json);
+                ProfileTips profileTips = new ProfileTips(this.getApplicationContext());
+                this.tips = profileTips.getProfileTips(fromCountry, toCountry, new Profile(age, qtTravelsAbroad, qtPoliceRecords, qtSons, travelReason));
 
+                //final JSONArray jsonObj = new JSONArray(json);
                 this.searchResultsModel = new SearchResultsModel();
-                this.dicas = new Dica[jsonObj.length()];
-                for (int i = 0; i < jsonObj.length(); i++) {
-                    JSONObject item = jsonObj.getJSONObject(i);
-                    this.dicas[i] = Dica.fromJSON(item);
-
-                    SearchResultItem dica = new SearchResultItem(i + 1, item.getString("titulo"), item.getString("conteudo"));
-                    searchResultsModel.addResultItem(dica);
+                int i = 0;
+                for (Tip tip : this.tips) {
+                    SearchResultItem resultItem = new SearchResultItem(i + 1, tip.getTitle(), tip.getContent());
+                    this.searchResultsModel.addResultItem(resultItem);
+                    i++;
                 }
 
                 // POPULA OS DADOS
@@ -70,8 +62,8 @@ public class SearchResultActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent i = new Intent(self, ItemDetailsActivity.class);
 
-                        i.putExtra("title", self.dicas[position].getTitulo());
-                        i.putExtra("description", self.dicas[position].getConteudo());
+                        i.putExtra("title", self.tips[position].getTitle());
+                        i.putExtra("description", self.tips[position].getContent());
                         startActivity(i);
                     }
                 });
@@ -81,22 +73,5 @@ public class SearchResultActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
-
-    public String readTextFile(InputStream inputStream) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        byte buf[] = new byte[1024];
-        int len;
-        try {
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
-            }
-            outputStream.close();
-            inputStream.close();
-        } catch (IOException e) {
-
-        }
-        return outputStream.toString();
     }
 }
